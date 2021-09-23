@@ -1,0 +1,31 @@
+/*DATA SET:*/ 
+IF OBJECT_ID('tempdb.dbo.#DancePartners','U') IS NOT NULL
+	DROP TABLE DancePartners;
+
+
+CREATE TABLE DancePartners
+(
+StudentID	INTEGER,
+Gender		VARCHAR(1)
+);
+
+
+INSERT INTO DancePartners VALUES
+(1001,'M'),
+(2002,'M'),
+(3003,'M'),
+(4004,'M'),
+(5005,'M'),
+(6006,'F'),
+(7007,'F'),
+(8008,'F'),
+(9009,'F');
+
+/*QUERY WRITTEN IN POSTGRES */
+
+SELECT M_d.studentid AS males, M_d.gender, F_d.studentid AS female, F_d.gender
+FROM dancepartners AS M_d 
+LEFT JOIN dancepartners AS F_d 
+ON M_d.gender != F_d.gender
+AND M_d.studentid = (F_d.studentid - 5005) 
+WHERE M_d.gender != 'F'
