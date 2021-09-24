@@ -1,0 +1,32 @@
+CREATE TABLE Employees
+(
+EmployeeID	INTEGER,
+ManagerID	INTEGER,
+JobTitle	VARCHAR(40),
+Salary		INTEGER
+);
+
+
+INSERT INTO Employees VALUES
+(1001,NULL,'President',185000),
+(2002,1001,'Director',120000),
+(3003,1001,'Office Manager',97000),
+(4004,2002,'Engineer',110000),
+(5005,2002,'Engineer',142000),
+(6006,2002,'Engineer',160000);
+
+/* Given the following table, write an SQL statement that determines the level of depth each employee has from the president.*/
+
+
+WITH RECURSIVE cor_cte AS(
+    SELECT e.employeeid, e.managerid, e.jobtitle, e.salary, 0 AS depth
+    FROM employees AS e
+    WHERE e.managerid IS NULL
+    UNION ALL
+    SELECT e.employeeid, e.managerid, e.jobtitle, e.salary, cte.depth + 1 AS the_depth
+    FROM cor_cte as cte
+    INNER JOIN employees AS e
+    ON cte.employeeid = e.managerid
+)
+SELECT * 
+from cor_cte
